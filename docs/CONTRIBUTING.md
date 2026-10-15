@@ -39,7 +39,7 @@ This document covers everything you need to go from zero to a merged pull reques
 | Python | 3.11+ |
 | Git | Any recent |
 | A GitHub PAT | `repo` scope |
-| A Groq or OpenAI API key | — |
+| A Groq API key | — |
 
 ### Clone and install
 

@@ -43,7 +43,7 @@ External Caller (HackingTheRepo platform)
 │       │ conversation history            │   │
 │       └─────────────────────────────────┘   │
 │                                             │
-│  (LangChain + Groq / OpenAI LLM)            │
+│  (LangChain + Groq LLM)                     │
 └──────────────────┬──────────────────────────┘
                    │  tool calls
         ┌──────────┼──────────────┐
@@ -276,7 +276,6 @@ All configuration is managed by `config/settings.py` using Pydantic `BaseSetting
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `GROQ_API_KEY` | Yes | — | Groq LLM API key (primary LLM backend) |
-| `OPENAI_API_KEY` | No | `None` | Optional OpenAI fallback |
 | `LLM_MODEL` | No | `llama-3.3-70b-versatile` | Model identifier |
 | `MAX_PLAN_STEPS` | No | `15` | Max steps the planner will produce |
 | `GITHUB_TOKEN` | Yes | — | Fine-grained PAT with `repo` scope |

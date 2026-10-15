@@ -106,7 +106,7 @@ Never store secrets in your Docker image or source code. Always inject them at r
 
 | Variable          | Description                               | Example         |
 | ----------------- | ----------------------------------------- | --------------- |
-| `OPENAI_API_KEY`  | OpenAI secret key                         | `sk-proj-...`   |
+| `GROQ_API_KEY`    | Groq API key                              | `gsk_...`       |
 | `GITHUB_TOKEN`    | GitHub PAT with `repo` scope              | `ghp_...`       |
 | `GITHUB_USERNAME` | GitHub username associated with the token | `your-username` |
 
@@ -114,7 +114,7 @@ Never store secrets in your Docker image or source code. Always inject them at r
 
 | Variable         | Default       | Description                            |
 | ---------------- | ------------- | -------------------------------------- |
-| `LLM_MODEL`      | `gpt-4o`      | LLM model to use                       |
+| `LLM_MODEL`      | `llama-3.3-70b-versatile` | Groq model to use                  |
 | `MAX_PLAN_STEPS` | `15`          | Max steps the planner produces per job |
 | `APP_ENV`        | `development` | Set to `production` in prod            |
 | `LOG_LEVEL`      | `INFO`        | `DEBUG`, `INFO`, `WARNING`, or `ERROR` |
@@ -122,10 +122,10 @@ Never store secrets in your Docker image or source code. Always inject them at r
 ### Production `.env` example
 
 ```env
-OPENAI_API_KEY=sk-proj-...
+GROQ_API_KEY=gsk_...
 GITHUB_TOKEN=ghp_...
 GITHUB_USERNAME=repomind-bot
-LLM_MODEL=gpt-4o
+LLM_MODEL=llama-3.3-70b-versatile
 MAX_PLAN_STEPS=15
 APP_ENV=production
 LOG_LEVEL=WARNING
@@ -137,7 +137,7 @@ On cloud platforms that don't support `.env` files, pass each variable individua
 
 ```bash
 docker run -d \
-  -e OPENAI_API_KEY="sk-proj-..." \
+  -e GROQ_API_KEY="gsk_..." \
   -e GITHUB_TOKEN="ghp_..." \
   -e GITHUB_USERNAME="repomind-bot" \
   -e APP_ENV="production" \
@@ -243,7 +243,7 @@ sudo ufw allow 'Nginx Full'
 3. Select your `repomind` repository.
 4. Railway auto-detects the `Dockerfile` and builds it.
 5. Go to your service → **Variables** → add all required env vars:
-   - `OPENAI_API_KEY`
+   - `GROQ_API_KEY`
    - `GITHUB_TOKEN`
    - `GITHUB_USERNAME`
    - `APP_ENV=production`
@@ -261,7 +261,7 @@ sudo ufw allow 'Nginx Full'
    - **Environment:** Docker
    - **Dockerfile Path:** `./Dockerfile`
    - **Port:** `8000`
-5. Under **Environment Variables**, add `OPENAI_API_KEY`, `GITHUB_TOKEN`, `GITHUB_USERNAME`, `APP_ENV=production`.
+5. Under **Environment Variables**, add `GROQ_API_KEY`, `GITHUB_TOKEN`, `GITHUB_USERNAME`, `APP_ENV=production`.
 6. Click **Deploy**.
 
 Render provides a free tier but it spins down idle services after 15 minutes. Use a paid plan for production.
@@ -519,7 +519,7 @@ Before going live, verify each item:
 - [ ] `APP_ENV=production` is set
 - [ ] `LOG_LEVEL` is `WARNING` or `ERROR` in production (avoids leaking LLM prompts to logs)
 - [ ] GitHub PAT has the **minimum required scope** — `repo` only, with an expiration date
-- [ ] OpenAI key has **usage limits** set at [platform.openai.com/account/limits](https://platform.openai.com/account/limits)
+- [ ] Groq key is monitored for usage and rate limits at [console.groq.com](https://console.groq.com)
 - [ ] HTTPS is enabled — never run RepoMind over plain HTTP with real secrets
 - [ ] Container is **not running as root** (consider adding `USER 1001` to the Dockerfile)
 - [ ] Docker Hub token used in CI is a **limited-scope access token**, not your account password
@@ -535,7 +535,7 @@ WORKDIR /app
 COPY . .
 
 RUN pip install --no-cache-dir fastapi uvicorn pydantic pydantic-settings \
-    python-dotenv langchain langchain-openai langchain-community langchain-core \
+    python-dotenv langchain langchain-groq langchain-community langchain-core \
     gitpython PyGithub httpx pytest pytest-asyncio
 
 # Create and switch to a non-root user

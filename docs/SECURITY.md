@@ -68,7 +68,7 @@ The executor (`agent/executor.py`) carries out steps planned by the LLM. Malicio
 Structured outputs from the LLM (`ToolDecision`, `Plan`) drive tool calls. Ensure your LLM provider enforces strict output schemas; do not eval or exec any LLM-generated string directly.
 
 **`.env` files**
-`OPENAI_API_KEY` and `GITHUB_TOKEN` must never be committed. Both `.env` and `.env.local` are in `.gitignore`. Always use `config/.env.example` as the only committed template.
+`GROQ_API_KEY` and `GITHUB_TOKEN` must never be committed. Both `.env` and `.env.local` are in `.gitignore`. Always use `config/.env.example` as the only committed template.
 
 ---
 

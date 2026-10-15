@@ -69,7 +69,7 @@ RepoMind lives as a **separate, independently deployable ML service**. It is int
 | Layer              | Technology                   |
 | ------------------ | ---------------------------- |
 | Agent Framework    | LangChain / LlamaIndex       |
-| LLM Backend        | OpenAI GPT-4o (configurable) |
+| LLM Backend        | Groq (Llama 3.3 70B)         |
 | API Server         | FastAPI + Uvicorn            |
 | GitHub Integration | PyGitHub + GitPython         |
 | Code Parsing       | Tree-sitter / AST            |
@@ -130,7 +130,7 @@ RepoMind/                          ← Project root
 
 - Python 3.11+
 - A GitHub Personal Access Token (PAT) with `repo` scope
-- An OpenAI API key (or whichever LLM backend you configure)
+- A Groq API key ([console.groq.com/keys](https://console.groq.com/keys))
 - Docker (optional, for containerised deployment)
 
 ### 1. Clone the repo
@@ -157,10 +157,10 @@ cp config/.env.example .env
 Open `.env` and fill in the required values:
 
 ```env
-OPENAI_API_KEY=sk-...
+GROQ_API_KEY=gsk_...
 GITHUB_TOKEN=ghp_...
 GITHUB_USERNAME=your-github-username
-LLM_MODEL=gpt-4o
+LLM_MODEL=llama-3.3-70b-versatile
 MAX_PLAN_STEPS=15
 LOG_LEVEL=INFO
 ```

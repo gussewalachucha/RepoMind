@@ -3,27 +3,22 @@ config/settings.py
 
 Pydantic BaseSettings for RepoMind.
 
-Supports both Groq (primary, free) and OpenAI (fallback) backends.
-At least one LLM API key must be provided — startup will fail with a clear
-error if neither is set.
+Groq is the only supported LLM backend. GROQ_API_KEY is required — startup
+will fail with a clear error if it is not set.
 """
 
 from __future__ import annotations
 
 from functools import lru_cache
 
-from pydantic import model_validator
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    # ── LLM — Groq (primary, free, fast) ─────────────────────────────────────
-    groq_api_key: str | None = None
+    # ── LLM — Groq ───────────────────────────────────────────────────────────
+    groq_api_key: str
     llm_model: str = "llama-3.3-70b-versatile"
-
-    # ── LLM — OpenAI (optional fallback) ─────────────────────────────────────
-    openai_api_key: str | None = None
-    openai_model: str = "gpt-4o"
 
     # ── Plan limits ───────────────────────────────────────────────────────────
     max_plan_steps: int = 10
@@ -40,19 +35,13 @@ class Settings(BaseSettings):
         env_file = ".env"
         extra = "ignore"
 
-    @model_validator(mode="after")
-    def at_least_one_llm_key(self) -> Settings:
-        """Fail fast at startup if no LLM backend is configured."""
-        if not self.groq_api_key and not self.openai_api_key:
-            raise ValueError("At least one LLM API key must be set: GROQ_API_KEY or OPENAI_API_KEY")
-        return self
-
-    @property
-    def active_llm_model(self) -> str:
-        """Return the model name appropriate for the active backend."""
-        if self.openai_api_key:
-            return self.openai_model
-        return self.llm_model
+    @field_validator("groq_api_key")
+    @classmethod
+    def groq_key_not_blank(cls, v: str) -> str:
+        """Fail fast at startup if the Groq key is empty."""
+        if not v.strip():
+            raise ValueError("GROQ_API_KEY must be set")
+        return v
 
     @property
     def is_production(self) -> bool:

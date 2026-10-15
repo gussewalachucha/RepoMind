@@ -26,7 +26,7 @@
 | Python         | 3.11+           | `python --version`                                               |
 | pip            | 23+             | `pip --version`                                                  |
 | Git            | Any recent      | `git --version`                                                  |
-| OpenAI API Key | —               | [platform.openai.com](https://platform.openai.com)               |
+| Groq API Key   | —               | [console.groq.com/keys](https://console.groq.com/keys)           |
 | GitHub PAT     | —               | [github.com/settings/tokens](https://github.com/settings/tokens) |
 
 > **Windows / MSYS2 users:** You are running Python inside an MSYS2-managed environment, which blocks system-wide `pip install`. You **must** use a virtual environment — see Section 3 for the exact commands.
@@ -91,7 +91,7 @@ This reads from `pyproject.toml` and installs everything in one shot. The `-e` f
 
 | Group | Packages                                                                                                                                                                                  |
 | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Core  | `fastapi`, `uvicorn`, `pydantic`, `pydantic-settings`, `langchain`, `langchain-openai`, `langchain-community`, `openai`, `PyGithub`, `gitpython`, `python-dotenv`, `httpx`, `tree-sitter` |
+| Core  | `fastapi`, `uvicorn`, `pydantic`, `pydantic-settings`, `langchain`, `langchain-groq`, `langchain-community`, `PyGithub`, `gitpython`, `python-dotenv`, `httpx`, `tree-sitter` |
 | Dev   | `pytest`, `pytest-asyncio`, `black`, `ruff`, `mypy`                                                                                                                                       |
 
 ### Verify the install
@@ -114,8 +114,8 @@ Open `.env` in your editor and fill in every value:
 
 ```env
 # ── LLM ──────────────────────────────────────────────────────────────────────
-OPENAI_API_KEY=sk-...          # Your OpenAI secret key
-LLM_MODEL=gpt-4o               # Or gpt-3.5-turbo for cheaper testing
+GROQ_API_KEY=gsk_...            # Your Groq API key
+LLM_MODEL=llama-3.3-70b-versatile   # Any Groq-hosted model id
 MAX_PLAN_STEPS=15              # Max steps the planner will produce
 
 # ── GitHub ────────────────────────────────────────────────────────────────────
@@ -265,7 +265,7 @@ pip install --upgrade -e ".[dev]"
 ### Upgrade a single package
 
 ```bash
-pip install --upgrade langchain langchain-openai
+pip install --upgrade langchain langchain-groq
 ```
 
 ### After upgrading
